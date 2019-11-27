@@ -1,0 +1,34 @@
+<a href="/admin/setup/phar/medname">
+    <button class="btn btn-dark btn-rounded">Back</button>
+</a>
+</br></br>
+<div class="panel panel-default">
+    <div class="panel-heading font-header"><h4>Edit Medicine Name</h4></div>
+    <div class="panel-body">
+         <form id="regform1" method="post" action="/admin/setup/phar/medname/edit" name="regform1" >
+                <div class="form-group">
+                    <input name="id" type="hidden" value="{{ result._id }}" />
+                    <label class="control-label" for="raidtestname">Medicine Category</label>
+                    <select class="form-control input-rounded" name="medcategory" id= "medcategory" disabled>
+                        <option value="" > Select </option>
+                        {{#medcategory}}
+                            <option value = "{{_id}}" {{#ifCond _id '==' ../result.medcategory_id._id}}selected {{/ifCond}} >{{name}}</option>
+                        {{/medcategory}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="name">Medicine Name</label>
+                    <input type="text" name="name" id="name" class="form-control input-rounded" value="{{ result.name }}" placeholder="Medicine Name">
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="sales_price">Medicine Price</label>
+                    <input type="text" name="sales_price" id="sales_price" class="form-control input-rounded" value="{{ result.sales_price }}" placeholder="Medicine Price">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-rounded">Update</button>
+                </div>
+         </form>
+    </div>
+</div>
+
+

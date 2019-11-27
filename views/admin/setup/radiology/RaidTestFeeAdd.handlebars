@@ -1,0 +1,31 @@
+<a href="/admin/setup/raid/testfee">
+    <button class="btn btn-dark btn-rounded">Back</button>
+</a>
+</br></br>
+<div class="panel panel-default">
+    <div class="panel-heading font-header"><h4>Register New Radiology Payment Fee</h4></div>
+    <div class="panel-body">
+         <form id="regform1" method="post" action="/admin/setup/raid/testfee/add" name="regform1" >
+                <div class="form-group">
+                    <label class="control-label" for="raidtestname">Test Name</label>
+                    <select class="form-control input-rounded" name="raidtestname" id= "raidtestname" >
+                        <option value="" selected> Select </option>
+                        {{#raidtestname}}
+                        <option value="{{_id}}"> {{name}} </option>
+                        {{/raidtestname}}
+                    </select>
+                </div>
+        
+                <div class="form-group">
+                    <label class="control-label" for="amount">Amount</label>
+                    <input type="text" name="amount" id="amount" class="form-control input-rounded" placeholder="Amount">
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-rounded">Save</button>
+                </div>
+         </form>
+    </div>
+</div>
+
+

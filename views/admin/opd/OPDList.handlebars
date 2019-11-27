@@ -1,0 +1,269 @@
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-8 col-md-9">
+                <div class="form-inline font-12">
+                    <h2>List of Registered OPD(s)</h2>
+                </div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" id= "datatable">
+            <thead>
+                <tr>
+                    <th>NAME OF PATIENT</th>
+                    <th>PATIENT ID/CARD NUMBER</th>
+                    <th>GENDER</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if result}}
+                    {{#result}}
+                    <tr>
+                        <td>{{regpatient_id.first_name}} {{regpatient_id.middle_name}} {{regpatient_id.last_name}}</td>
+                        <td>{{regpatient_id.patient_id}}</td>
+                        {{#each ../result2}}
+                            {{#ifCond _id '==' ../regpatient_id.gender}}
+                                <td>{{name}}</td>
+                            {{/ifCond}}
+                        {{/each}}
+                        <td>
+                            {{#ifCond status '==' 0}}
+                                <a class="btn btn-danger btn-rounded" data-patientname="{{regpatient_id.first_name}}" "{{regpatient_id.middle_name}}" "{{regpatient_id.last_name}}" 
+                                data-cardno="{{regpatient_id.patient_id}}" data-gender="" data-regpatientid="{{regpatient_id._id}}" data-opdid="{{_id}}" 
+                                data-toggle="modal" data-target="#OPDModal"> 
+                                    Input INFO
+                                </a> 
+                                {{else}}
+                                <a class="btn btn-success btn-rounded" disabled>
+                                    Approved
+                                </a>
+                                <a class="btn btn-gray btn-rounded" data-toggle="modal" data-target="#OPDViewModal"  
+                                data-patientname="{{regpatient_id.first_name}}" "{{regpatient_id.middle_name}}" "{{regpatient_id.last_name}}" 
+                                data-cardno="{{regpatient_id.patient_id}}" data-gender="" data-regpatientid="{{regpatient_id._id}}" data-opdid="{{_id}}"
+                                data-patientage="{{age}}" data-blood_group="{{blood_group}}" data-patientheight="{{height}}" data-patientweight="{{weight}}" 
+                                data-blood_pressure="{{blood_pressure}}" data-patientamount="{{amount}}" data-payment_mode="{{payment_mode}}" data-patientnote="{{note}}" >
+                                    View Details
+                                </a>
+                            {{/ifCond}}
+                        </td>
+                        
+                    </tr>
+                    {{/result}}
+                {{else}}
+                    <tr>There are no Registered Patient(s) yet</tr>
+                {{/if}} 
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{{!-- reg OPD details Modal --}}
+<div class="modal fade" id="OPDModal" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">OPD Form</h4>
+        </div>
+        <div class="modal-body">
+            <form method="POST" id="OPDModalForm" action="/admin/opd/regdetails" >
+                <input type="hidden"  name="RegPatientId" id="RegPatientId">
+                <input type="hidden"  name="OPDId" id="OPDId">
+                                
+                <div class="form-group">
+                    <label class="control-label" for="PatientName">First Name</label>
+                    <input type="text" name="PatientName" id="PatientName" class="form-control input-rounded" disabled>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="PatientID">Patient ID/Card Number</label>
+                            <input type="text" name="PatientID" id="PatientID" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="Gender">Gender</label>
+                            <input type="text" name="Gender" id="Gender" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label" for="age">Age</label>
+                            <input type="date" name="age" id="age" class="form-control input-rounded">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label" for="bloodgroup">Blood Group</label>
+                            <select class="form-control input-rounded" name="bloodgroup" id= "bloodgroup">
+                            <option value="" selected> Select </option>
+                            {{#bloodgroup}}
+                            <option value="{{_id}}"> {{name}} </option>
+                            {{/bloodgroup}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label" for="height">Height</label>
+                            <input type="text" name="height" id="height" class="form-control input-rounded">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label" for="weight">Weight</label>
+                            <input type="text" name="weight" id="weight" class="form-control input-rounded">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label" for="bloodpressure">BP</label>
+                            <input type="text" name="bloodpressure" id="bloodpressure" class="form-control input-rounded">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="amount">Amount(#)</label>
+                            <select class="form-control input-rounded" name="amount" id= "amount">
+                                <option value="" selected> Select </option>
+                                {{#payfee}}
+                                <option value="{{department_id._id}}"> {{department_id.name}}-{{amount}} </option>
+                                {{/payfee}}
+                            </select>
+                            {{!-- <input type="text" name="amount" id="amount" class="form-control input-rounded"> --}}
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="paymode">Payment Mode</label>
+                            <select class="form-control input-rounded" name="paymode" id= "paymode">
+                                <option value="" selected> Select </option>
+                                {{#paymode}}
+                                <option value="{{_id}}"> {{name}} </option>
+                                {{/paymode}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="note">Note</label>
+                    <textarea name="note" id="note" class="form-control input-rounded" placeholder="Anything to Note"></textarea>
+                </div>
+
+                <div class="modal-footer"> 
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button> 
+                    <button class="btn btn-main submit-btn"> Post Reply </button>
+                </div> 
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+{{!-- End of reg OPD details Modal--}}
+
+{{!-- View OPD details Modal --}}
+<div class="modal fade" id="OPDViewModal" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">View OPD Patient's Details</h4>
+        </div>
+        <div class="modal-body">
+            <form method="POST" id="OPDViewModalForm" action="" >
+                <input type="hidden"  name="RegPatientId" id="RegPatientId">
+                <input type="hidden"  name="OPDId" id="OPDId">
+                                
+                <div class="form-group">
+                    <label class="control-label" for="PatientName">First Name</label>
+                    <input type="text" name="PatientName" id="PatientName" class="form-control input-rounded" disabled>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="PatientID">Patient ID/Card Number</label>
+                            <input type="text" name="PatientID" id="PatientID" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="Gender">Gender</label>
+                            <input type="text" name="Gender" id="Gender" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label" for="age">Age</label>
+                            <input type="date" name="age" id="age" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label" for="bloodgroup">Blood Group</label>
+                           <input type="text" name="bloodgroup" id="bloodgroup" class="form-control input-rounded" disabled>
+                       </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label" for="height">Height</label>
+                            <input type="text" name="height" id="height" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label" for="weight">Weight</label>
+                            <input type="text" name="weight" id="weight" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label" for="bloodpressure">BP</label>
+                            <input type="text" name="bloodpressure" id="bloodpressure" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="amount">Amount(#)</label>
+                            <input type="text" name="amount" id="amount" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="paymode">Payment Mode</label>
+                            <input type="text" name="paymode" id="paymode" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="note">Note</label>
+                    <textarea name="note" id="note" class="form-control input-rounded" disabled></textarea>
+                </div>
+
+                <div class="modal-footer"> 
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button> 
+                </div> 
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+{{!-- End of View OPD detailsModal --}}

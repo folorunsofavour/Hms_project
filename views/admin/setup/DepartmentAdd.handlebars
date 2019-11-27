@@ -1,0 +1,35 @@
+<a href="/admin/setup/dept">
+    <button class="btn btn-dark btn-rounded">Back</button>
+</a>
+</br></br>
+<div class="panel panel-default">
+    <div class="panel-heading font-header"><h4>Register New Department</h4></div>
+    <div class="panel-body">
+         <form id="regform1" method="post" action="/admin/setup/dept/add" name="regform1" >
+                <div class="form-group">
+                    <label class="control-label" for="name">Department</label>
+                    <input type="text" name="name" id="name" class="form-control input-rounded" placeholder="Department">
+                </div>
+                <div class="form-group">
+                    <legend>Category</legend>
+                    <label class="control-label" for="category">Pharmacy</label>
+                    <input type="radio" name="category" id="category" value="pharmacy" >
+                    <label class="control-label" for="category">Pathology</label>
+                    <input type="radio" name="category" id="category" value="pathology">
+                    <label class="control-label" for="category">Radiology</label>
+                    <input type="radio" name="category" id="category" value="radiology">
+                    <label class="control-label" for="category">Operation Theatre</label>
+                    <input type="radio" name="category" id="category" value="theatre">
+                    <label class="control-label" for="category">Blood Bank</label>
+                    <input type="radio" name="category" id="category" value="bloodbank">
+                    <label class="control-label" for="category">End Process</label>
+                    <input type="radio" name="category" id="category" value="endprocess">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-rounded">Save</button>
+                </div>
+         </form>
+    </div>
+</div>
+
+

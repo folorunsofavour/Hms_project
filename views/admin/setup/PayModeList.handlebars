@@ -1,0 +1,47 @@
+
+
+<div class="panel panel-default">
+    <div class="panel-heading font-header">
+        <a href="/admin/setup/paymode/add">
+            <button class="btn btn-success btn-rounded">Add Payment Mode
+                <i class="mdi mdi-plus"></i>
+            </button>
+        </a>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-8 col-md-9">
+                <div class="form-inline font-12">
+                    <h2>List of Registered Payment Mode</h2>
+                </div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" id= "datatable">
+            <thead>
+                <tr>
+                    <th>NAME</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if result}}
+                    {{#result}}
+                    <tr>
+                        <td>{{name}}</td>
+
+                        <td>
+                            <a href="/admin/setup/paymode/edit/{{ _id }}" class="btn btn-default btn-rounded"> 
+                                Edit
+                            </a> 
+                        </td>
+                    </tr>
+                    {{/result}}
+                {{else}}
+                    <tr>There are no Registered Payment Mode yet</tr>
+                {{/if}} 
+            </tbody>
+        </table>
+    </div>
+</div>

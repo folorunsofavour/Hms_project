@@ -1,0 +1,30 @@
+<a href="/admin/setup/payfee">
+    <button class="btn btn-dark btn-rounded">Back</button>
+</a>
+</br></br>
+<div class="panel panel-default">
+    <div class="panel-heading font-header"><h4>Edit Payment Fee</h4></div>
+    <div class="panel-body">
+         <form id="regform1" method="post" action="/admin/setup/payfee/edit" name="regform1" >
+                <div class="form-group">
+                    <input name="id" type="hidden" value="{{ result._id }}" />
+                    <label class="control-label" for="deptname">Department</label>
+                    <select class="form-control input-rounded" name="deptname" id= "deptname">
+                        <option value="" > Select </option>
+                        {{#dept}}
+                            <option value = "{{_id}}" {{#ifCond _id '==' ../result.department_id._id}}selected{{/ifCond}}>{{name}}</option>
+                        {{/dept}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="amount">Amount</label>
+                    <input type="text" name="amount" id="amount" class="form-control input-rounded" value="{{ result.amount }}" placeholder="Amount">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-rounded">Update</button>
+                </div>
+         </form>
+    </div>
+</div>
+
+

@@ -1,0 +1,74 @@
+<div class="panel panel-default">
+    <div class="panel-heading font-header">
+        <a href="/admin/frontoffice/appointment/add">
+            <button class="btn btn-success btn-rounded">Register New Appointment
+                <i class="mdi mdi-plus"></i>
+            </button>
+        </a>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-8 col-md-9">
+                <div class="form-inline font-12">
+                    <h2>List of Registered Appointment(s)</h2>
+                </div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" id= "datatable">
+            <thead>
+                <tr>
+                    <th>NAME OF PATIENT</th>
+                    <th>DATE BOOKED</th>
+                    <th>PHONE NUMBER</th>
+                    <th>PATIENT ID/CARD NUMBER</th>
+                    <th>GENDER</th>
+                    <th>MESSAGE</th>
+                    <th>STATUS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if result}}
+                    {{#result}}
+                    <tr>
+                        <input type="hidden"  name="RegPatientId" id="RegPatientId" value="{{regpatient_id._id}}">
+                        <input type="hidden"  name="RegPatientMessage" id="RegPatientMessage" value="{{appointment_message}}">
+                        <input type="hidden"  name="AppointmentDate" id="AppointmentDate" value="{{appointment_date}}">
+                 
+                        <td>{{regpatient_id.first_name}} {{regpatient_id.middle_name}} {{regpatient_id.last_name}}</td>
+                        <td>{{appointment_date}}</td>
+                        <td>{{regpatient_id.phone_number}}</td>
+                        <td>{{regpatient_id.patient_id}}</td>
+                        {{#each ../result2}}
+                            {{#ifCond _id '==' ../regpatient_id.gender}}
+                                <td>{{name}}</td>
+                            {{/ifCond}}
+                        {{/each}}
+                        <td>{{appointment_message}}</td>
+                            {{#ifCond status '==' 2 }}
+                                <td>Pending</td>
+                                {{else}}
+                                    {{#ifCond status '==' 0 }}
+                                        <td>Disapproved</td>
+                                        {{else}}
+                                    <td>Approved</td>
+                                {{/ifCond}}
+                            {{/ifCond}}
+                        {{!-- <td>
+                            <a class="btn btn-gray btn-rounded"  href="/admin/frontoffice/appointment/approve/{{ _id }}">
+                                Approve
+                            </a>
+                            <a class="btn btn-success btn-rounded"  href="/admin/frontoffice/appointment/disapprove/{{ _id }}">
+                                Already Approved
+                            </a>
+                        </td> --}}
+                    </tr>
+                    {{/result}}
+                {{else}}
+                    <tr>There are no Registered Appointment(s) yet</tr>
+                {{/if}} 
+            </tbody>
+        </table>
+    </div>
+</div>

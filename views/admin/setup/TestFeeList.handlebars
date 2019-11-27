@@ -1,0 +1,47 @@
+<div class="panel panel-default">
+    <div class="panel-heading font-header">
+        <a href="/admin/setup/testfee/add">
+            <button class="btn btn-success btn-rounded">Add Test Fee
+                <i class="mdi mdi-plus"></i>
+            </button>
+        </a>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-8 col-md-9">
+                <div class="form-inline font-12">
+                    <h2>List of Registered Test Fee</h2>
+                </div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" id= "datatable">
+            <thead>
+                <tr>
+                    <th>TEST NAME</th>
+                    <th>AMOUNT</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if result}}
+                    {{#result}}
+                    <tr>
+                        <td>{{testname_id.name}}</td>
+                        <td>{{amount}}</td>
+
+                        <td>
+                            <a href="/admin/setup/testfee/edit/{{ _id }}" class="btn btn-default btn-rounded"> 
+                                Edit
+                            </a> 
+                        </td>
+                    </tr>
+                    {{/result}}
+                {{else}}
+                    <tr>There are no Registered Test Fee yet</tr>
+                {{/if}} 
+            </tbody>
+        </table>
+    </div>
+</div>

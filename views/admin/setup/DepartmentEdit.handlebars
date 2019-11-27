@@ -1,0 +1,36 @@
+<a href="/admin/setup/dept">
+    <button class="btn btn-dark btn-rounded">Back</button>
+</a>
+</br></br>
+<div class="panel panel-default">
+    <div class="panel-heading font-header"><h4>Edit Department</h4></div>
+    <div class="panel-body">
+         <form id="regform1" method="post" action="/admin/setup/dept/edit" name="regform1" >
+                <div class="form-group">
+                    <input name="id" type="hidden" value="{{ result._id }}" />
+                    <label class="control-label" for="name">Department</label>
+                    <input type="text" name="name" id="name" class="form-control input-rounded" value="{{ result.name }}" placeholder="Department">
+                </div>
+                <div class="form-group">
+                    <legend>Category</legend>
+                    <label class="control-label" for="category">Pharmacy</label>
+                    <input type="radio" name="category" id="category" value="pharmacy" {{#ifCond result.category '==' "pharmacy" }} checked {{/ifCond}} disabled >
+                    <label class="control-label" for="category">Pathology</label>
+                    <input type="radio" name="category" id="category" value="pathology" {{#ifCond result.category '==' "pathology" }} checked {{/ifCond}} disabled>
+                    <label class="control-label" for="category">Radiology</label>
+                    <input type="radio" name="category" id="category" value="radiology" {{#ifCond result.category '==' "radiology" }} checked {{/ifCond}} disabled>
+                    <label class="control-label" for="category">Operation Theatre</label>
+                    <input type="radio" name="category" id="category" value="theatre" {{#ifCond result.category '==' "theatre" }} checked {{/ifCond}} disabled>
+                    <label class="control-label" for="category">Blood Bank</label>
+                    <input type="radio" name="category" id="category" value="bloodbank" {{#ifCond result.category '==' "bloodbank" }} checked {{/ifCond}} disabled>
+                    <label class="control-label" for="category">End Process</label>
+                    <input type="radio" name="category" id="category" value="endprocess" {{#ifCond result.category '==' "endprocess" }} checked {{/ifCond}} disabled>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-rounded">Update</button>
+                </div>
+         </form>
+    </div>
+</div>
+
+

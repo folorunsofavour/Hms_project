@@ -1,0 +1,440 @@
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" id= "datatable">
+            <thead>
+                <tr>
+                    <th>NAME OF PATIENT</th>
+                    <th>PATIENT ID/CARD NUMBER</th>
+                    <th>GENDER</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if result}}
+                    {{#result}}
+                    <tr>
+                        {{#each ../consultdoctor}}
+                            {{#ifCond _id '==' ../consultdoctor_id._id}}
+                                {{#each ../../opd}}
+                                    {{#ifCond _id '==' ../opd_id}}
+                                        <td>{{regpatient_id.first_name}}</td>
+                                        <td>{{regpatient_id.patient_id}}</td>
+                                        
+                                        {{#each ../../../result2}}
+                                            {{#ifCond _id '==' ../regpatient_id.gender}}
+                                                <td>{{name}}</td>
+                                                {{#each ../../../../dept}}
+                                                    {{#ifCond _id '==' ../../../department_id}}
+                                                        {{#each ../../../../../payfee}}
+                                                            {{#ifCond _id '==' ../../../../payment_fee}}
+                                                                <td>
+                                                                    {{#ifCond ../../../../../status '==' 0}}
+                                                                        <a class="btn btn-danger btn-rounded" data-toggle="modal" data-target="#PathModal"  
+                                                                            
+                                                                        data-opdname="{{../../../regpatient_id.first_name}}" "{{../../../regpatient_id.middle_name}}" "{{../../../regpatient_id.last_name}}" data-consultid="{{../../../../../consultdoctor_id._id}}" data-opdregpatientid="{{../../../_id}}"
+                                                                        data-pathid="{{../../../../../_id}}" data-opdcardno="{{../../../regpatient_id.patient_id}}" data-opdage="{{../../../age}}" data-opdgender="{{../../name}}" data-opdbloodgroup="{{../blood_group}}"data-opdheight="{{../../../height}}"
+                                                                        data-opdweight="{{../../../weight}}" data-opdbloodpressure="{{../../../blood_pressure}}" data-opdnote="{{../../../note}}" data-opdamount="{{opd_id.amount}}"  data-opdsymptom="{{../../../../symptom}}" data-opdallergy="{{../../../../allergy}}"
+                                                                        data-opddept="{{../name}}" data-opddoctornote="{{../../../../doctor_note}}" data-opdpayfee="{{department_id.name}}-{{amount}}" >
+                                                                        Input INFO
+                                                                        </a>
+                                                                        {{else}}
+                                                                        <a class="btn btn-success btn-rounded" disabled>
+                                                                            Approved
+                                                                        </a>
+                                                                        <a class="btn btn-gray btn-rounded" data-toggle="modal" data-target="#PathViewModal"  
+                                                                        data-opdname="{{../../../regpatient_id.first_name}}" "{{../../../regpatient_id.middle_name}}" "{{../../../regpatient_id.last_name}}" data-consultid="{{../../../../../consultdoctor_id._id}}" data-opdregpatientid="{{../../../_id}}"
+                                                                        data-pathid="{{../../../../../_id}}" data-opdcardno="{{../../../regpatient_id.patient_id}}" data-opdage="{{../../../age}}" data-opdgender="{{../../name}}" data-opdbloodgroup="{{../blood_group}}"data-opdheight="{{../../../height}}"
+                                                                        data-opdweight="{{../../../weight}}" data-opdbloodpressure="{{../../../blood_pressure}}" data-opdnote="{{../../../note}}" data-opdamount="{{opd_id.amount}}"  data-opdsymptom="{{../../../../symptom}}" data-opdallergy="{{../../../../allergy}}"
+                                                                        data-opddept="{{../name}}" data-opddoctornote="{{../../../../doctor_note}}" data-opdpayfee="{{department_id.name}}-{{amount}}" data-pathdept="{{../../../../../department_id}}" data-pathmethod="{{../../../../../method}}" 
+                                                                        data-pathtestname="{{../../../../../test_name}}" data-pathtesttype="{{../../../../../test_type}}" data-pathtestcharges="{{../../../../../test_charges}}" data-pathcode="{{../../../../../code}}" data-pathdays="{{../../../../../report_days}}">
+                                                                            View Pathology TestDetails
+                                                                        </a>
+                                                                    {{/ifCond}}
+                                                                </td>
+                                                            {{/ifCond}}
+                                                        {{/each}}
+                                                    {{/ifCond}}
+                                                {{/each}}
+                                                
+                                            {{/ifCond}}
+                                        {{/each}} 
+                                    {{/ifCond}}
+                                {{/each}}
+                            {{/ifCond}}
+                        {{/each}}
+                        
+                        
+                    </tr>
+                    {{/result}}
+                {{else}}
+                    <tr>There are no Pathology Patient(s) yet</tr>
+                {{/if}} 
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{{!-- reg OPD details Modal --}}
+<div class="modal fade" id="PathModal" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">Pathology Form</h4>
+        </div>
+        <div class="modal-body">
+            <form method="POST" id="PathModalForm" action="/admin/path/regdetails" >
+                <input type="text"  name="OPDPatientId" id="OPDPatientId">
+                <input type="text"  name="ConsultId" id="ConsultId">
+                <input type="text"  name="PathId" id="PathId">
+                                
+                <div class="form-group">
+                    <label class="control-label" for="OPDName">Patient Name</label>
+                    <input type="text" name="OPDName" id="OPDName" class="form-control input-rounded" disabled>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDCardID">Patient ID/Card Number</label>
+                            <input type="text" name="OPDCardID" id="OPDCardID" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDGender">Gender</label>
+                            <input type="text" name="OPDGender" id="OPDGender" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDAge">Age</label>
+                            <input type="date" name="OPDAge" id="OPDAge" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDBloodGroup">Blood Group</label>
+                           <input type="text" name="OPDBloodGroup" id="OPDBloodGroup" class="form-control input-rounded" disabled>
+                       </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDHeight">Height</label>
+                            <input type="text" name="OPDHeight" id="OPDHeight" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDWeight">Weight</label>
+                            <input type="text" name="OPDWeight" id="OPDWeight" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDBloodPressure">BP</label>
+                            <input type="text" name="OPDBloodPressure" id="OPDBloodPressure" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="OPDNote">Note</label>
+                    <textarea name="OPDNote" id="OPDNote" class="form-control input-rounded" disabled></textarea>
+                </div>
+
+                
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDDept">Department to go</label>
+                            <input type="text" name="OPDDept" id="OPDDept" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDPayFee">Payment Fee</label>
+                            <input type="text" name="OPDPayFee" id="OPDPayFee" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDSymptom">Symptoms</label>
+                            <textarea name="OPDSymptom" id="OPDSymptom" class="form-control input-rounded" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDAllergy">Allergy</label>
+                            <textarea name="OPDAllergy" id="OPDAllergy" class="form-control input-rounded" disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="OPDDoctorNote">Doctor's Note</label>
+                    <textarea name="OPDDoctorNote" id="OPDDoctorNote" class="form-control input-rounded" disabled></textarea>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="dept">Department to go</label>
+                            <select class="form-control input-rounded" name="dept" id= "dept">
+                                <option value="" selected> Select </option>
+                                {{#dept}}
+                                <option value="{{_id}}"> {{name}} </option>
+                                {{/dept}}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="method">Method for Test</label>
+                            <input type="text" name="method" id="method" class="form-control input-rounded" >
+                        </div>
+                    </div>
+                </div>
+
+
+                 <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="test_name">Test Name</label>
+                            <select class="form-control input-rounded" name="test_name" id= "test_name">
+                                <option value="" selected> Select </option>
+                                {{#testname}}
+                                <option value="{{_id}}"> {{name}} </option>
+                                {{/testname}}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="test_type">Test Type</label>
+                            <input type="text" name="test_type" id="test_type" class="form-control input-rounded" >
+                        </div>
+                    </div>
+                </div>
+                
+                 <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="code">Test Code</label>
+                            <input type="text" name="code" id="code" class="form-control input-rounded" >
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="test_charges">Test Charges</label>
+                            <select class="form-control input-rounded" name="test_charges" id= "test_charges">
+                            <option value="" selected> Select </option>
+                            {{#testfee}}
+                            <option value="{{_id}}"> {{testname_id.name}}-{{amount}} </option>
+                            {{/testfee}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="report_days">Report Days</label>
+                    <input type="text" name="report_days" id="report_days" class="form-control input-rounded" >
+                </div>
+
+                <div class="modal-footer"> 
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button> 
+                    <button class="btn btn-main submit-btn"> Submit </button>
+                </div>  
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+{{!-- End of reg OPD details Modal--}}
+
+{{!-- View OPD details Modal --}}
+<div class="modal fade" id="PathViewModal" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title">View OPD Patient's Details</h4>
+        </div>
+        <div class="modal-body">
+            <form method="POST" id="PathViewModalForm" action="" >
+                <input type="hidden"  name="OPDPatientId" id="OPDPatientId">
+                <input type="hidden"  name="ConsultId" id="ConsultId">
+                <input type="hidden"  name="PathId" id="PathId">
+                                
+                <div class="form-group">
+                    <label class="control-label" for="OPDName">Patient Name</label>
+                    <input type="text" name="OPDName" id="OPDName" class="form-control input-rounded" disabled>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDCardID">Patient ID/Card Number</label>
+                            <input type="text" name="OPDCardID" id="OPDCardID" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDGender">Gender</label>
+                            <input type="text" name="OPDGender" id="OPDGender" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDAge">Age</label>
+                            <input type="date" name="OPDAge" id="OPDAge" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDBloodGroup">Blood Group</label>
+                           <input type="text" name="OPDBloodGroup" id="OPDBloodGroup" class="form-control input-rounded" disabled>
+                       </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDHeight">Height</label>
+                            <input type="text" name="OPDHeight" id="OPDHeight" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDWeight">Weight</label>
+                            <input type="text" name="OPDWeight" id="OPDWeight" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDBloodPressure">BP</label>
+                            <input type="text" name="OPDBloodPressure" id="OPDBloodPressure" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="OPDNote">Note</label>
+                    <textarea name="OPDNote" id="OPDNote" class="form-control input-rounded" disabled></textarea>
+                </div>
+
+                
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDDept">Department to go</label>
+                            <input type="text" name="OPDDept" id="OPDDept" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDPayFee">Payment Fee</label>
+                            <input type="text" name="OPDPayFee" id="OPDPayFee" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDSymptom">Symptoms</label>
+                            <textarea name="OPDSymptom" id="OPDSymptom" class="form-control input-rounded" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="OPDAllergy">Allergy</label>
+                            <textarea name="OPDAllergy" id="OPDAllergy" class="form-control input-rounded" disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="OPDDoctorNote">Doctor's Note</label>
+                    <textarea name="OPDDoctorNote" id="OPDDoctorNote" class="form-control input-rounded" disabled></textarea>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="PathDept">Department to go</label>
+                            <input type="text" name="PathDept" id="PathDept" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="PathMethod">Method for Test</label>
+                            <input type="text" name="PathMethod" id="PathMethod" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                </div>
+
+
+                 <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="PathTestName">Test Name</label>
+                            <input type="text" name="PathTestName" id="PathTestName" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="PathTestType">Test Type</label>
+                            <input type="text" name="PathTestType" id="PathTestType" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                </div>
+                
+                 <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="PathCode">Test Code</label>
+                            <input type="text" name="PathCode" id="PathCode" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label" for="PathTestCharges">Test Charges</label>
+                            <input type="text" name="PathTestCharges" id="PathTestCharges" class="form-control input-rounded" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="PathDays">Report Days</label>
+                    <input type="text" name="PathDays" id="PathDays" class="form-control input-rounded" disabled>
+                </div>
+
+                <div class="modal-footer"> 
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button> 
+                </div> 
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+{{!-- End of View OPD detailsModal --}}

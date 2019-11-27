@@ -1,0 +1,860 @@
+<link href="/assets/backend/js/datatables/datatables.css" rel="stylesheet"> 
+  
+<script src="/assets/backend/js/datatables/datatables.js"></script>
+
+<script src="/assets/backend/js/jquery-1.11.2.min.js"></script> <!-- Bootstrap -->
+   
+<script src="/assets/backend/bootstrap/bootstrap.min.js"></script> <!-- Modernizr -->
+
+<script src="/assets/backend/js/modernizr.min.js"></script> <!-- Slim Scroll -->
+
+<script src="/assets/backend/js/jquery.slimscroll.min.js"></script> <!-- Animsition -->
+
+<script src="/assets/backend/js/jquery.animsition.min.js"></script> <!-- Sparkline -->
+
+<script src="/assets/backend/js/jquery.sparkline.min.js"></script> <!-- Flot -->
+
+<script src="/assets/backend/js/jquery.flot.min.js"></script> <!-- Simple Calendar -->
+
+<script src="/assets/backend/js/uncompressed/simplecalendar.js"></script> <!-- Skycons -->
+
+<script src='/assets/backend/js/uncompressed/skycons.js'></script> <!-- Noty -->
+
+<script src="/assets/backend/js/jquery.noty.packaged.min.js"></script> <!-- Cookie -->
+
+<script src='/assets/backend../js/uncompressed/jquery.cookie.js'></script> <!-- App -->
+
+<script src="/assets/backend/js/app.min.js"></script>
+
+{{!-- for OPD --}}
+
+<script>
+  $("#OPDModal").on('show.bs.modal', function(e){
+
+      var cardno = $(e.relatedTarget).data('cardno');
+      var patientname = $(e.relatedTarget).data('patientname');
+      var gender = $(e.relatedTarget).data('gender');
+      var regpatientid = $(e.relatedTarget).data('regpatientid');
+      var opdid = $(e.relatedTarget).data('opdid');
+
+      $("input[id=PatientName]").val(patientname);
+      $("input[id=PatientID]").val(cardno);
+      $("input[id=Gender]").val(gender);
+      $("input[id=RegPatientId]").val(regpatientid);
+      $("input[id=OPDId]").val(opdid);
+
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+      $("#OPDModalForm").submit(function(event){
+          event.preventDefault(); 
+          var post_url = $(this).attr("action"); //get form action url
+          var request_method = $(this).attr("method"); //get form GET/POST method
+          var form_data = $(this).serialize(); //Encode form elements for submission
+          
+          $.ajax({
+          url: post_url,
+          type: request_method,
+          data: form_data
+          })
+          .done(function(response) {
+              if (response == "Please fill out all fields"){
+                  $("#OPDModal").modal('show');
+                  alert("Please fill out all fields");
+              }
+              else if (response == "Registered Successfully"){
+                  $("#OPDModal").modal('hide');
+                  alert("Registered Successfully");
+                  window.location.href = '/admin/opd/';
+              }
+              else{
+                  console.log('Else------')
+              }
+          });
+      });
+  });
+</script>
+
+<script>
+  $("#OPDViewModal").on('show.bs.modal', function(e){
+
+      var cardno = $(e.relatedTarget).data('cardno');
+      var patientname = $(e.relatedTarget).data('patientname');
+      var gender = $(e.relatedTarget).data('gender');
+      var regpatientid = $(e.relatedTarget).data('regpatientid');
+      var opdid = $(e.relatedTarget).data('opdid');
+      var patientage = $(e.relatedTarget).data('patientage');
+      var blood_group = $(e.relatedTarget).data('blood_group');
+      var patientheight = $(e.relatedTarget).data('patientheight');
+      var patientweight = $(e.relatedTarget).data('patientweight');
+      var blood_pressure = $(e.relatedTarget).data('blood_pressure');
+      var patientamount = $(e.relatedTarget).data('patientamount');
+      var payment_mode = $(e.relatedTarget).data('payment_mode');
+      var patientnote = $(e.relatedTarget).data('patientnote');
+      
+      $("input[id=PatientName]").val(patientname);
+      $("input[id=PatientID]").val(cardno);
+      $("input[id=Gender]").val(gender);
+      $("input[id=RegPatientId]").val(regpatientid);
+      $("input[id=OPDId]").val(opdid);
+      $("input[id=age]").val(patientage);
+      $("input[id=bloodgroup]").val(blood_group);
+      $("input[id=height]").val(patientheight);
+      $("input[id=weight]").val(patientweight);
+      $("input[id=bloodpressure]").val(blood_pressure);
+      $("input[id=amount]").val(patientamount);
+      $("input[id=paymode]").val(payment_mode);
+      $("textarea[id=note]").val(patientnote);
+
+  });
+</script>
+
+{{!-- end for OPD --}}
+
+{{!-- for consultdoctor --}}
+
+<script>
+  $("#AppOPDModal").on('show.bs.modal', function(e){
+
+      var opdcardno = $(e.relatedTarget).data('opdcardno');
+      var opdname = $(e.relatedTarget).data('opdname');
+      var opdgender = $(e.relatedTarget).data('opdgender');
+      var opdregpatientid = $(e.relatedTarget).data('opdregpatientid');
+      var consultid = $(e.relatedTarget).data('consultid');
+      var opdage = $(e.relatedTarget).data('opdage');
+      var opdbloodgroup = $(e.relatedTarget).data('opdbloodgroup');
+      var opdheight = $(e.relatedTarget).data('opdheight');
+      var opdweight = $(e.relatedTarget).data('opdweight');
+      var opdbloodpressure = $(e.relatedTarget).data('opdbloodpressure');
+      var opdamount = $(e.relatedTarget).data('opdamount');
+      var opdnote = $(e.relatedTarget).data('opdnote');
+      
+      $("input[id=OPDName]").val(opdname);
+      $("input[id=OPDCardID]").val(opdcardno);
+      $("input[id=OPDGender]").val(opdgender);
+      $("input[id=OPDPatientId]").val(opdregpatientid);
+      $("input[id=ConsultId]").val(consultid);
+      $("input[id=OPDAge]").val(opdage);
+      $("input[id=OPDBloodGroup]").val(opdbloodgroup);
+      $("input[id=OPDHeight]").val(opdheight);
+      $("input[id=OPDWeight]").val(opdweight);
+      $("input[id=OPDBloodPressure]").val(opdbloodpressure);
+      $("input[id=OPDAmount]").val(opdamount);
+      $("textarea[id=OPDNote]").val(opdnote);
+
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+      $("#AppOPDModalForm").submit(function(event){
+          event.preventDefault(); 
+          var post_url = $(this).attr("action"); //get form action url
+          var request_method = $(this).attr("method"); //get form GET/POST method
+          var form_data = $(this).serialize(); //Encode form elements for submission
+          
+          $.ajax({
+          url: post_url,
+          type: request_method,
+          data: form_data
+          })
+          .done(function(response) {
+              if (response == "Please fill out all fields"){
+                  $("#AppOPDModal").modal('show');
+                  alert("Please fill out all fields");
+              }
+              else if (response == "Registered Successfully"){
+                  $("#AppOPDModal").modal('hide');
+                  alert("Registered Successfully");
+                  window.location.href = '/admin/consultdoctor';
+              }
+              else{
+                  console.log('Else------')
+              }
+          });
+      });
+  });
+</script>
+
+<script>
+  $("#AppOPDViewModal").on('show.bs.modal', function(e){
+
+      var opdcardno = $(e.relatedTarget).data('opdcardno');
+      var opdname = $(e.relatedTarget).data('opdname');
+      var opdgender = $(e.relatedTarget).data('opdgender');
+      var opdregpatientid = $(e.relatedTarget).data('opdregpatientid');
+      var consultid = $(e.relatedTarget).data('consultid');
+      var opdage = $(e.relatedTarget).data('opdage');
+      var opdbloodgroup = $(e.relatedTarget).data('opdbloodgroup');
+      var opdheight = $(e.relatedTarget).data('opdheight');
+      var opdweight = $(e.relatedTarget).data('opdweight');
+      var opdbloodpressure = $(e.relatedTarget).data('opdbloodpressure');
+      var opdamount = $(e.relatedTarget).data('opdamount');
+      var opdnote = $(e.relatedTarget).data('opdnote');
+      var opdsymptom= $(e.relatedTarget).data('opdsymptom');
+      var opdallergy= $(e.relatedTarget).data('opdallergy');
+      var opddept = $(e.relatedTarget).data('opddept');
+      var opddoctornote = $(e.relatedTarget).data('opddoctornote');
+      var opdpayfee = $(e.relatedTarget).data('opdpayfee');
+      
+      $("input[id=OPDName]").val(opdname);
+      $("input[id=OPDCardID]").val(opdcardno);
+      $("input[id=OPDGender]").val(opdgender);
+      $("input[id=OPDPatientId]").val(opdregpatientid);
+      $("input[id=ConsultId]").val(consultid);
+      $("input[id=OPDAge]").val(opdage);
+      $("input[id=OPDBloodGroup]").val(opdbloodgroup);
+      $("input[id=OPDHeight]").val(opdheight);
+      $("input[id=OPDWeight]").val(opdweight);
+      $("input[id=OPDBloodPressure]").val(opdbloodpressure);
+      $("input[id=OPDAmount]").val(opdamount);
+      $("textarea[id=OPDNote]").val(opdnote);
+      $("textarea[id=OPDSymptom]").val(opdsymptom);
+      $("textarea[id=OPDAllergy]").val(opdallergy);
+      $("input[id=OPDDept]").val(opddept);
+      $("textarea[id=OPDDoctorNote]").val(opddoctornote);
+      $("input[id=OPDPayFee]").val(opdpayfee);
+
+  });
+</script>
+
+{{!-- end for consultdoctor --}}
+
+{{!-- for pathology --}}
+
+<script>
+  $("#PathModal").on('show.bs.modal', function(e){
+
+      var opdcardno = $(e.relatedTarget).data('opdcardno');
+      var opdname = $(e.relatedTarget).data('opdname');
+      var opdgender = $(e.relatedTarget).data('opdgender');
+      var opdregpatientid = $(e.relatedTarget).data('opdregpatientid');
+      var consultid = $(e.relatedTarget).data('consultid');
+      var opdage = $(e.relatedTarget).data('opdage');
+      var opdbloodgroup = $(e.relatedTarget).data('opdbloodgroup');
+      var opdheight = $(e.relatedTarget).data('opdheight');
+      var opdweight = $(e.relatedTarget).data('opdweight');
+      var opdbloodpressure = $(e.relatedTarget).data('opdbloodpressure');
+      var opdamount = $(e.relatedTarget).data('opdamount');
+      var opdnote = $(e.relatedTarget).data('opdnote');
+      var opdsymptom= $(e.relatedTarget).data('opdsymptom');
+      var opdallergy= $(e.relatedTarget).data('opdallergy');
+      var opddept = $(e.relatedTarget).data('opddept');
+      var opddoctornote = $(e.relatedTarget).data('opddoctornote');
+      var opdpayfee = $(e.relatedTarget).data('opdpayfee');
+      var pathid = $(e.relatedTarget).data('pathid');
+      
+      $("input[id=OPDName]").val(opdname);
+      $("input[id=OPDCardID]").val(opdcardno);
+      $("input[id=OPDGender]").val(opdgender);
+      $("input[id=OPDPatientId]").val(opdregpatientid);
+      $("input[id=ConsultId]").val(consultid);
+      $("input[id=OPDAge]").val(opdage);
+      $("input[id=OPDBloodGroup]").val(opdbloodgroup);
+      $("input[id=OPDHeight]").val(opdheight);
+      $("input[id=OPDWeight]").val(opdweight);
+      $("input[id=OPDBloodPressure]").val(opdbloodpressure);
+      $("input[id=OPDAmount]").val(opdamount);
+      $("textarea[id=OPDNote]").val(opdnote);
+      $("textarea[id=OPDSymptom]").val(opdsymptom);
+      $("textarea[id=OPDAllergy]").val(opdallergy);
+      $("input[id=OPDDept]").val(opddept);
+      $("textarea[id=OPDDoctorNote]").val(opddoctornote);
+      $("input[id=OPDPayFee]").val(opdpayfee);
+      $("input[id=PathId]").val(pathid);
+
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+      $("#PathModalForm").submit(function(event){
+          event.preventDefault(); 
+          var post_url = $(this).attr("action"); //get form action url
+          var request_method = $(this).attr("method"); //get form GET/POST method
+          var form_data = $(this).serialize(); //Encode form elements for submission
+          
+          $.ajax({
+          url: post_url,
+          type: request_method,
+          data: form_data
+          })
+          .done(function(response) {
+              if (response == "Please fill out all fields"){
+                  $("#PathModal").modal('show');
+                  alert("Please fill out all fields");
+              }
+              else if (response == "Registered Successfully"){
+                  $("#PathModal").modal('hide');
+                  alert("Registered Successfully");
+                  window.location.href = '/admin/path';
+              }
+              else{
+                  console.log('Else------')
+              }
+          });
+      });
+  });
+</script>
+
+<script>
+  $("#PathViewModal").on('show.bs.modal', function(e){
+
+      var opdcardno = $(e.relatedTarget).data('opdcardno');
+      var opdname = $(e.relatedTarget).data('opdname');
+      var opdgender = $(e.relatedTarget).data('opdgender');
+      var opdregpatientid = $(e.relatedTarget).data('opdregpatientid');
+      var consultid = $(e.relatedTarget).data('consultid');
+      var opdage = $(e.relatedTarget).data('opdage');
+      var opdbloodgroup = $(e.relatedTarget).data('opdbloodgroup');
+      var opdheight = $(e.relatedTarget).data('opdheight');
+      var opdweight = $(e.relatedTarget).data('opdweight');
+      var opdbloodpressure = $(e.relatedTarget).data('opdbloodpressure');
+      var opdamount = $(e.relatedTarget).data('opdamount');
+      var opdnote = $(e.relatedTarget).data('opdnote');
+      var opdsymptom= $(e.relatedTarget).data('opdsymptom');
+      var opdallergy= $(e.relatedTarget).data('opdallergy');
+      var opddept = $(e.relatedTarget).data('opddept');
+      var opddoctornote = $(e.relatedTarget).data('opddoctornote');
+      var opdpayfee = $(e.relatedTarget).data('opdpayfee');
+      var pathdept = $(e.relatedTarget).data('pathdept');
+      var pathtestname= $(e.relatedTarget).data('pathtestname');
+      var pathtesttype= $(e.relatedTarget).data('pathtesttype');
+      var pathmethod = $(e.relatedTarget).data('pathmethod');
+      var pathcode = $(e.relatedTarget).data('pathcode');
+      var pathdays = $(e.relatedTarget).data('pathdays');
+      var pathtestcharges = $(e.relatedTarget).data('pathtestcharges');
+      var pathid = $(e.relatedTarget).data('pathid');
+      
+      $("input[id=OPDName]").val(opdname);
+      $("input[id=OPDCardID]").val(opdcardno);
+      $("input[id=OPDGender]").val(opdgender);
+      $("input[id=OPDPatientId]").val(opdregpatientid);
+      $("input[id=ConsultId]").val(consultid);
+      $("input[id=OPDAge]").val(opdage);
+      $("input[id=OPDBloodGroup]").val(opdbloodgroup);
+      $("input[id=OPDHeight]").val(opdheight);
+      $("input[id=OPDWeight]").val(opdweight);
+      $("input[id=OPDBloodPressure]").val(opdbloodpressure);
+      $("input[id=OPDAmount]").val(opdamount);
+      $("textarea[id=OPDNote]").val(opdnote);
+      $("textarea[id=OPDSymptom]").val(opdsymptom);
+      $("textarea[id=OPDAllergy]").val(opdallergy);
+      $("input[id=OPDDept]").val(opddept);
+      $("textarea[id=OPDDoctorNote]").val(opddoctornote);
+      $("input[id=OPDPayFee]").val(opdpayfee);
+      $("input[id=PathDept]").val(pathdept);
+      $("input[id=PathTestName]").val(pathtestname);
+      $("input[id=PathTestType]").val(pathtesttype);
+      $("input[id=PathMethod]").val(pathmethod);
+      $("input[id=PathCode]").val(pathcode);
+      $("input[id=PathDays]").val(pathdays);
+      $("input[id=PathTestCharges]").val(pathtestcharges);
+      $("input[id=PathId]").val(pathid);
+
+  });
+</script>
+
+{{!-- end for pathology --}}
+
+{{!-- for radiology --}}
+
+<script>
+  $("#RaidModal").on('show.bs.modal', function(e){
+
+      var opdcardno = $(e.relatedTarget).data('opdcardno');
+      var opdname = $(e.relatedTarget).data('opdname');
+      var opdgender = $(e.relatedTarget).data('opdgender');
+      var opdregpatientid = $(e.relatedTarget).data('opdregpatientid');
+      var consultid = $(e.relatedTarget).data('consultid');
+      var opdage = $(e.relatedTarget).data('opdage');
+      var opdbloodgroup = $(e.relatedTarget).data('opdbloodgroup');
+      var opdheight = $(e.relatedTarget).data('opdheight');
+      var opdweight = $(e.relatedTarget).data('opdweight');
+      var opdbloodpressure = $(e.relatedTarget).data('opdbloodpressure');
+      var opdamount = $(e.relatedTarget).data('opdamount');
+      var opdnote = $(e.relatedTarget).data('opdnote');
+      var opdsymptom= $(e.relatedTarget).data('opdsymptom');
+      var opdallergy= $(e.relatedTarget).data('opdallergy');
+      var opddept = $(e.relatedTarget).data('opddept');
+      var opddoctornote = $(e.relatedTarget).data('opddoctornote');
+      var opdpayfee = $(e.relatedTarget).data('opdpayfee');
+      var raidid = $(e.relatedTarget).data('raidid');
+      
+      $("input[id=OPDName]").val(opdname);
+      $("input[id=OPDCardID]").val(opdcardno);
+      $("input[id=OPDGender]").val(opdgender);
+      $("input[id=OPDPatientId]").val(opdregpatientid);
+      $("input[id=ConsultId]").val(consultid);
+      $("input[id=OPDAge]").val(opdage);
+      $("input[id=OPDBloodGroup]").val(opdbloodgroup);
+      $("input[id=OPDHeight]").val(opdheight);
+      $("input[id=OPDWeight]").val(opdweight);
+      $("input[id=OPDBloodPressure]").val(opdbloodpressure);
+      $("input[id=OPDAmount]").val(opdamount);
+      $("textarea[id=OPDNote]").val(opdnote);
+      $("textarea[id=OPDSymptom]").val(opdsymptom);
+      $("textarea[id=OPDAllergy]").val(opdallergy);
+      $("input[id=OPDDept]").val(opddept);
+      $("textarea[id=OPDDoctorNote]").val(opddoctornote);
+      $("input[id=OPDPayFee]").val(opdpayfee);
+      $("input[id=RaidId]").val(raidid);
+
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+      $("#RaidModalForm").submit(function(event){
+          event.preventDefault(); 
+          var post_url = $(this).attr("action"); //get form action url
+          var request_method = $(this).attr("method"); //get form GET/POST method
+          var form_data = $(this).serialize(); //Encode form elements for submission
+          
+          $.ajax({
+          url: post_url,
+          type: request_method,
+          data: form_data
+          })
+          .done(function(response) {
+              if (response == "Please fill out all fields"){
+                  $("#RaidModal").modal('show');
+                  alert("Please fill out all fields");
+              }
+              else if (response == "Registered Successfully"){
+                  $("#RaidModal").modal('hide');
+                  alert("Registered Successfully");
+                  window.location.href = '/admin/raid';
+              }
+              else{
+                  console.log('Else------')
+              }
+          });
+      });
+  });
+</script>
+
+<script>
+  $("#RaidViewModal").on('show.bs.modal', function(e){
+
+      var opdcardno = $(e.relatedTarget).data('opdcardno');
+      var opdname = $(e.relatedTarget).data('opdname');
+      var opdgender = $(e.relatedTarget).data('opdgender');
+      var opdregpatientid = $(e.relatedTarget).data('opdregpatientid');
+      var consultid = $(e.relatedTarget).data('consultid');
+      var opdage = $(e.relatedTarget).data('opdage');
+      var opdbloodgroup = $(e.relatedTarget).data('opdbloodgroup');
+      var opdheight = $(e.relatedTarget).data('opdheight');
+      var opdweight = $(e.relatedTarget).data('opdweight');
+      var opdbloodpressure = $(e.relatedTarget).data('opdbloodpressure');
+      var opdamount = $(e.relatedTarget).data('opdamount');
+      var opdnote = $(e.relatedTarget).data('opdnote');
+      var opdsymptom= $(e.relatedTarget).data('opdsymptom');
+      var opdallergy= $(e.relatedTarget).data('opdallergy');
+      var opddept = $(e.relatedTarget).data('opddept');
+      var opddoctornote = $(e.relatedTarget).data('opddoctornote');
+      var opdpayfee = $(e.relatedTarget).data('opdpayfee');
+      var raiddept = $(e.relatedTarget).data('raiddept');
+      var raidtestname= $(e.relatedTarget).data('raidtestname');
+      var raidtesttype= $(e.relatedTarget).data('raidtesttype');
+      var raidmethod = $(e.relatedTarget).data('raidmethod');
+      var raidcode = $(e.relatedTarget).data('raidcode');
+      var raiddays = $(e.relatedTarget).data('raiddays');
+      var raidtestcharges = $(e.relatedTarget).data('raidtestcharges');
+      var raidid = $(e.relatedTarget).data('raidid');
+      
+      $("input[id=OPDName]").val(opdname);
+      $("input[id=OPDCardID]").val(opdcardno);
+      $("input[id=OPDGender]").val(opdgender);
+      $("input[id=OPDPatientId]").val(opdregpatientid);
+      $("input[id=ConsultId]").val(consultid);
+      $("input[id=OPDAge]").val(opdage);
+      $("input[id=OPDBloodGroup]").val(opdbloodgroup);
+      $("input[id=OPDHeight]").val(opdheight);
+      $("input[id=OPDWeight]").val(opdweight);
+      $("input[id=OPDBloodPressure]").val(opdbloodpressure);
+      $("input[id=OPDAmount]").val(opdamount);
+      $("textarea[id=OPDNote]").val(opdnote);
+      $("textarea[id=OPDSymptom]").val(opdsymptom);
+      $("textarea[id=OPDAllergy]").val(opdallergy);
+      $("input[id=OPDDept]").val(opddept);
+      $("textarea[id=OPDDoctorNote]").val(opddoctornote);
+      $("input[id=OPDPayFee]").val(opdpayfee);
+      $("input[id=RaidDept]").val(raiddept);
+      $("input[id=RaidTestName]").val(raidtestname);
+      $("input[id=RaidTestType]").val(raidtesttype);
+      $("input[id=RaidMethod]").val(raidmethod);
+      $("input[id=RaidCode]").val(raidcode);
+      $("input[id=RaidDays]").val(raiddays);
+      $("input[id=RaidTestCharges]").val(raidtestcharges);
+      $("input[id=RaidId]").val(raidid);
+
+  });
+</script>
+
+{{!-- end for radiology --}}
+
+{{!-- for pharmacy --}}
+
+<script>
+  $("#PharModal").on('show.bs.modal', function(e){
+
+      var opdcardno = $(e.relatedTarget).data('opdcardno');
+      var opdname = $(e.relatedTarget).data('opdname');
+      var opdgender = $(e.relatedTarget).data('opdgender');
+      var opdregpatientid = $(e.relatedTarget).data('opdregpatientid');
+      var consultid = $(e.relatedTarget).data('consultid');
+      var opdage = $(e.relatedTarget).data('opdage');
+      var opdbloodgroup = $(e.relatedTarget).data('opdbloodgroup');
+      var opdheight = $(e.relatedTarget).data('opdheight');
+      var opdweight = $(e.relatedTarget).data('opdweight');
+      var opdbloodpressure = $(e.relatedTarget).data('opdbloodpressure');
+      var opdamount = $(e.relatedTarget).data('opdamount');
+      var opdnote = $(e.relatedTarget).data('opdnote');
+      var opdsymptom= $(e.relatedTarget).data('opdsymptom');
+      var opdallergy= $(e.relatedTarget).data('opdallergy');
+      var opddept = $(e.relatedTarget).data('opddept');
+      var opddoctornote = $(e.relatedTarget).data('opddoctornote');
+      var opdpayfee = $(e.relatedTarget).data('opdpayfee');
+      var pharid = $(e.relatedTarget).data('pharid');
+      
+      $("input[id=OPDName]").val(opdname);
+      $("input[id=OPDCardID]").val(opdcardno);
+      $("input[id=OPDGender]").val(opdgender);
+      $("input[id=OPDPatientId]").val(opdregpatientid);
+      $("input[id=ConsultId]").val(consultid);
+      $("input[id=OPDAge]").val(opdage);
+      $("input[id=OPDBloodGroup]").val(opdbloodgroup);
+      $("input[id=OPDHeight]").val(opdheight);
+      $("input[id=OPDWeight]").val(opdweight);
+      $("input[id=OPDBloodPressure]").val(opdbloodpressure);
+      $("input[id=OPDAmount]").val(opdamount);
+      $("textarea[id=OPDNote]").val(opdnote);
+      $("textarea[id=OPDSymptom]").val(opdsymptom);
+      $("textarea[id=OPDAllergy]").val(opdallergy);
+      $("input[id=OPDDept]").val(opddept);
+      $("textarea[id=OPDDoctorNote]").val(opddoctornote);
+      $("input[id=OPDPayFee]").val(opdpayfee);
+      $("input[id=PharId]").val(pharid);
+
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+      $("#PharModalForm").submit(function(event){
+          event.preventDefault(); 
+          var post_url = $(this).attr("action"); //get form action url
+          var request_method = $(this).attr("method"); //get form GET/POST method
+          var form_data = $(this).serialize(); //Encode form elements for submission
+          
+          $.ajax({
+          url: post_url,
+          type: request_method,
+          data: form_data
+          })
+          .done(function(response) {
+              if (response == "Please fill out all fields"){
+                  $("#PharModal").modal('show');
+                  alert("Please fill out all fields");
+              }
+              else if (response == "Registered Successfully"){
+                  $("#PharModal").modal('hide');
+                  alert("Registered Successfully");
+                  window.location.href = '/admin/phar';
+              }
+              else{
+                  console.log('Else------')
+              }
+          });
+      });
+  });
+</script>
+
+<script>
+  $("#PharViewModal").on('show.bs.modal', function(e){
+
+      var opdcardno = $(e.relatedTarget).data('opdcardno');
+      var opdname = $(e.relatedTarget).data('opdname');
+      var opdgender = $(e.relatedTarget).data('opdgender');
+      var opdregpatientid = $(e.relatedTarget).data('opdregpatientid');
+      var consultid = $(e.relatedTarget).data('consultid');
+      var opdage = $(e.relatedTarget).data('opdage');
+      var opdbloodgroup = $(e.relatedTarget).data('opdbloodgroup');
+      var opdheight = $(e.relatedTarget).data('opdheight');
+      var opdweight = $(e.relatedTarget).data('opdweight');
+      var opdbloodpressure = $(e.relatedTarget).data('opdbloodpressure');
+      var opdamount = $(e.relatedTarget).data('opdamount');
+      var opdnote = $(e.relatedTarget).data('opdnote');
+      var opdsymptom= $(e.relatedTarget).data('opdsymptom');
+      var opdallergy= $(e.relatedTarget).data('opdallergy');
+      var opddept = $(e.relatedTarget).data('opddept');
+      var opddoctornote = $(e.relatedTarget).data('opddoctornote');
+      var opdpayfee = $(e.relatedTarget).data('opdpayfee');
+      var pathdept = $(e.relatedTarget).data('pathdept');
+      var pathtestname= $(e.relatedTarget).data('pathtestname');
+      var pathtesttype= $(e.relatedTarget).data('pathtesttype');
+      var pathmethod = $(e.relatedTarget).data('pathmethod');
+      var pathcode = $(e.relatedTarget).data('pathcode');
+      var pathdays = $(e.relatedTarget).data('pathdays');
+      var pathtestcharges = $(e.relatedTarget).data('pathtestcharges');
+      var pharid = $(e.relatedTarget).data('pharid');
+      
+      $("input[id=OPDName]").val(opdname);
+      $("input[id=OPDCardID]").val(opdcardno);
+      $("input[id=OPDGender]").val(opdgender);
+      $("input[id=OPDPatientId]").val(opdregpatientid);
+      $("input[id=ConsultId]").val(consultid);
+      $("input[id=OPDAge]").val(opdage);
+      $("input[id=OPDBloodGroup]").val(opdbloodgroup);
+      $("input[id=OPDHeight]").val(opdheight);
+      $("input[id=OPDWeight]").val(opdweight);
+      $("input[id=OPDBloodPressure]").val(opdbloodpressure);
+      $("input[id=OPDAmount]").val(opdamount);
+      $("textarea[id=OPDNote]").val(opdnote);
+      $("textarea[id=OPDSymptom]").val(opdsymptom);
+      $("textarea[id=OPDAllergy]").val(opdallergy);
+      $("input[id=OPDDept]").val(opddept);
+      $("textarea[id=OPDDoctorNote]").val(opddoctornote);
+      $("input[id=OPDPayFee]").val(opdpayfee);
+      $("input[id=PathDept]").val(pathdept);
+      $("input[id=PathTestName]").val(pathtestname);
+      $("input[id=PathTestType]").val(pathtesttype);
+      $("input[id=PathMethod]").val(pathmethod);
+      $("input[id=PathCode]").val(pathcode);
+      $("input[id=PathDays]").val(pathdays);
+      $("input[id=PathTestCharges]").val(pathtestcharges);
+      $("input[id=PharId]").val(pharid);
+
+  });
+</script>
+
+{{!-- end for pharmacy --}}
+
+<script>
+
+      $(function()  {
+        //Theme Setting, change color of charts
+        $('.color-list > li > span').click(function() {
+          mainColor = $(this).data('color');
+          initChart();
+        });
+
+        var mainColor = '#5090F7';
+        var secondaryColor = '#34495e';
+
+        ////initialize all charts
+        initChart();
+
+        function initChart()  {        
+          var data = [{ data: [[0, 5], [1, 8], [2, 5], [3, 8], [4, 7], [5,9], [6, 8], [7, 8], [8, 10], [9, 12], [10, 10], [11, 5], [12, 9]],
+            label: "Mobile Application"
+          },
+            { data: [[0, 8], [1, 9], [2, 12], [3, 11], [4, 13], [5,9], [6, 10], [7, 9], [8, 9], [9, 8], [10, 10], [11, 12], [12, 13]],
+            label: "Web Application"
+          }],
+
+          options = { 
+            xaxis: {
+              ticks: [[1, 'Jan'], [2, 'Feb'], [3, 'Mar'], [4, 'Apr'], [5, 'May'], [6, 'Jun'], [7, 'Jul'], [8, 'Aug'], [9, 'Sep'], [10, 'Oct'], [11, 'Nov'], [12, 'Dec']]
+            },
+            series: {
+              lines: {
+                show: true, 
+              },
+              points: {
+                show: true,
+                radius: '3.5'
+              },
+              shadowSize: 0
+            },
+            grid: {
+              hoverable: true,
+              clickable: true,
+              color: '#bbb',
+              borderWidth: 1,
+              borderColor: '#eee'
+            },
+            colors: [mainColor,secondaryColor]
+          },
+          plot;
+
+          //Area Chart
+          var areaData = [{ 
+            data: [[0, 5], [1, 8], [2, 5], [3, 8], [4, 7], [5,9], [6, 8]],
+              label: "Follower"
+            }
+          ],
+
+          areaOptions = { 
+            xaxis: {
+              ticks: [[1, 'Mon'], [2, 'Tue'], [3, 'Wed'], [4, 'Thr'], [5, 'Fri'], [6, 'Sat'], [7, 'Sun']]
+            },
+            series: {
+              lines: { 
+                show: true, 
+                fill: true
+              },
+              shadowSize: 0
+            },
+            grid: {
+              hoverable: true,
+              clickable: true,
+              color: '#bbb',
+              borderWidth: 1,
+              borderColor: '#eee'
+            },
+            colors: [mainColor]
+          },
+          areaPlot;
+
+          plot = $.plot($('.line-placeholder'), data, options);
+          areaPlot = $.plot($('.area-placeholder'), areaData, areaOptions);
+
+          $("<div id='tooltip'><\/div>").css({
+            position: "absolute",
+            display: "none",
+            border: "1px solid #95a4b8",
+            padding: "4px",
+            "font-size": "12px",
+            color: "#fff",
+            "border-radius": "4px",
+            "background-color": "#95a4b8",
+            opacity: 0.90
+          }).appendTo("body");
+
+          $(".chart-placeholder").bind("plothover", function (event, pos, item) {
+            var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
+            $("#hoverdata").text(str);
+          
+            if (item) {
+              var x = item.datapoint[0],
+                y = item.datapoint[1];
+              
+                $("#tooltip").html(item.series.label+ " : " + y)
+                .css({top: item.pageY+5, left: item.pageX+5})
+                .fadeIn(200);
+            } else {
+              $("#tooltip").hide();
+            }
+          });
+
+          //Sparkline
+          $('.sparkbar').sparkline([15,19,20,22,33,27,31,27,19,30,21,10,15,18,25,9,11,14,16,10,15,16], {
+            type: 'bar', 
+            barColor: mainColor
+          });
+          $('.sparkline').sparkline([15,19,20,22,33,27,31,27,19,30,21,10,15,18,25,9,11,14,16,10,15,16,7,12,16,17,14,9,2,12,15,16,7,12,15,12,9,5,7,19,11,20,12,12], {
+            type: 'line', 
+            lineColor: mainColor,
+            fillColor: false,
+            maxSpotColor: false,
+            minSpotColor: false,
+            spotRadius: 0,
+            highlightLineColor: secondaryColor
+          });
+        }
+
+        //Redraw Charts
+        $(window).resize(function() {
+          initChart();
+        });
+
+        //Animated Weather Icons
+        var iconLarge = new Skycons({"color": "white"});
+        iconLarge.set("skycon1", "partly-cloudy-day");
+        
+        var iconsSmall = new Skycons({"color": "#7f888f"});
+        iconsSmall.set("skycon2", "partly-cloudy-day");
+        iconsSmall.set("skycon3", "sleet");
+        iconsSmall.set("skycon4", "wind");
+        iconsSmall.set("skycon5", "clear-day");
+        
+        iconLarge.play();
+        iconsSmall.play();
+
+        //Show event modal from clicking event on calendar
+        $('tbody.event-calendar').on('click', '.event', function() {
+          var monthEvent = $(this).attr('data-month');
+          var dayEvent = $(this).text();
+          var eventContent = $('.day-event[data-month="' + monthEvent + '"][data-day="' + dayEvent + '"]').children('.event-content').clone();
+
+          var targetModal = $('#showEventModal');
+
+          targetModal.find('.modal-body').append(eventContent);
+
+          targetModal.modal('show');
+        });
+
+        $('#showEventModal').on('hidden.bs.modal', function (e) {  
+          $(this).find('.modal-body').html('');
+        });
+
+        //Display notificaition
+        $(window).load(function() {
+          setTimeout(function() {
+            noty({
+                layout: 'topRight',
+                text: '<strong>Mary Cormier<\/strong><br/>Hello, are you there?',
+                theme: 'flat-noty noty-dark font-12',
+                template: '<div class="noty_message has-image"><span class="noty_image"><img src="../img/profile5.jpg" class="profile-pic" alt=""><\/span><span class="noty_text"><\/span><div class="noty_close"><\/div><\/div>',
+                type: '',
+                timeout: '5000',
+                animation: {
+                  open: 'animated flipInX',
+                  close: 'animated flipOutX',
+                  easing: 'swing', 
+                  speed: 500
+                }
+            });
+          },2000);
+        });        
+      });
+</script>
+
+  {{!-- datatables --}}
+<script type="text/javascript">
+$( document ).ready( function( $ ) {
+var $table4 = $( "#datatable" );
+$table4.DataTable( {
+  //buttons
+dom: 'Bfrtip',
+buttons: [
+'copyHtml5',
+'excelHtml5',
+'csvHtml5',
+'pdfHtml5'
+]
+} );
+} );
+</script>
+{{!-- end of datatables --}}
+
+
+<script>
+    $(function()  {
+    $(".animsition").animsition({
+    
+        inClass               :   'zoom-in-sm',
+        outClass              :   'zoom-out-sm',
+        inDuration            :    1500,
+        outDuration           :    800,
+        linkElement           :   '.animsition-link',
+        // e.g. linkElement   :   'a:not([target="_blank"]):not([href^=#])'
+        loading               :    true,
+        loadingParentElement  :   'body', //animsition wrapper element
+        loadingClass          :   'animsition-loading',
+        unSupportCss          : [ 'animation-duration',
+                                '-webkit-animation-duration',
+                                '-o-animation-duration'
+                                ],
+        overlay               :   false,
+        
+        overlayClass          :   'animsition-overlay-slide',
+        overlayParentElement  :   'body'
+    });
+    });
+</script>
+ {{!-- end of backend --}}

@@ -1,0 +1,30 @@
+<a href="/admin/setup/raid/testfee">
+    <button class="btn btn-dark btn-rounded">Back</button>
+</a>
+</br></br>
+<div class="panel panel-default">
+    <div class="panel-heading font-header"><h4>Edit Radiology Test Fee</h4></div>
+    <div class="panel-body">
+         <form id="regform1" method="post" action="/admin/setup/raid/testfee/edit" name="regform1" >
+                <div class="form-group">
+                    <input name="id" type="hidden" value="{{ result._id }}" />
+                    <label class="control-label" for="raidtestname">Radiology Test Name</label>
+                    <select class="form-control input-rounded" name="raidtestname" id= "raidtestname" disabled>
+                        <option value="" > Select </option>
+                        {{#raidtestname}}
+                            <option value = "{{_id}}" {{#ifCond _id '==' ../result.raidtestname_id._id}}selected {{/ifCond}} >{{name}}</option>
+                        {{/raidtestname}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="amount">Amount</label>
+                    <input type="text" name="amount" id="amount" class="form-control input-rounded" value="{{ result.amount }}" placeholder="Amount">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-rounded">Update</button>
+                </div>
+         </form>
+    </div>
+</div>
+
+
