@@ -22,7 +22,7 @@
     "express-paginatorjs": "^1.0.1",
     "express-session": "^1.15.6",
     "faker": "^4.1.0",
-    "fast-csv": "^2.4.1",
+    "fast-csv": "^4.3.6",
     "handlebars-loop": "^1.0.3",
     "formidable": "^1.2.1",
     "http": "0.0.0",
